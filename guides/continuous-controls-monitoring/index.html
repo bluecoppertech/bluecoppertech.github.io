@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Continuous Controls Monitoring: A Practical Setup Guide for ISO
+27001, SOC 2, DPDP Act, RBI and CERT-In</title>
+<meta name="description" content="Continuous controls monitoring explained: which controls to automate first, test frequency, owners, evidence and a 90-day plan across five frameworks.">
+<meta name="author" content="Gayatri Chakrabarty">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Continuous Controls Monitoring: A
+Practical Setup Guide for ISO 27001, SOC 2, DPDP Act, RBI and CERT-In">
+<meta property="og:description" content="Continuous controls monitoring explained: which controls to automate first, test frequency, owners, evidence and a 90-day plan across five frameworks.">
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:780px;margin:2rem auto;padding:0 1rem;line-height:1.65;color:#1d2433}
+h1{font-size:2rem;line-height:1.25}h2{margin-top:2.2rem}
+a{color:#0b5cad}table{border-collapse:collapse;width:100%;font-size:.93rem;margin:1rem 0;display:block;overflow-x:auto}
+th,td{border:1px solid #d5dbe5;padding:.5rem;text-align:left;vertical-align:top}th{background:#f2f5f9}
+</style>
+</head>
+<body>
+<main>
+<h1
+id="continuous-controls-monitoring-a-practical-setup-guide-for-iso-27001-soc-2-dpdp-act-rbi-and-cert-in">Continuous
+Controls Monitoring: A Practical Setup Guide for ISO 27001, SOC 2, DPDP
+Act, RBI and CERT-In</h1>
+<p><em>By Gayatri Chakrabarty, Blue Copper Technologies · Last updated
+20 November 2026</em></p>
+<p><strong>Continuous controls monitoring (CCM) is the automated,
+scheduled testing of security and compliance controls, with results and
+evidence stored as they happen.</strong> Instead of sampling controls
+once a year before an audit, CCM checks each control at a set frequency,
+flags failures to a named owner, and keeps a dated record that auditors
+can reuse. A practical rollout starts with 15 to 20 high-risk controls
+that systems can test on their own, and grows from there.</p>
+<h2 id="what-is-continuous-controls-monitoring">What is continuous
+controls monitoring?</h2>
+<p>CCM has three parts:</p>
+<ul>
+<li><p><strong>Automated tests:</strong> scripts or integrations that
+check a control’s state (for example, “MFA is enforced for every admin
+account”) against a pass rule.</p></li>
+<li><p><strong>A schedule:</strong> each control runs as often as its
+risk calls for, from real time to quarterly.</p></li>
+<li><p><strong>An evidence trail:</strong> every result is stored with a
+timestamp, the data it checked and the person who closed any
+failure.</p></li>
+</ul>
+<p>The idea is older than most compliance tools. NIST described it as
+Information Security Continuous Monitoring in <a
+href="https://csrc.nist.gov/pubs/sp/800/137/final">Special Publication
+800-137</a> in 2011. What has changed is that most controls now live in
+cloud consoles, identity providers and ticketing systems with APIs, so
+they can be tested by software.</p>
+<h2 id="how-is-ccm-different-from-continuous-compliance">How is CCM
+different from continuous compliance?</h2>
+<p>Continuous compliance is the goal: being audit-ready on any day of
+the year. CCM is the engine that gets you there. It covers the testing
+and evidence part of continuous compliance, while policies, risk
+assessments, training and governance sit around it.</p>
+<h2 id="why-do-the-frameworks-expect-monitoring-now">Why do the
+frameworks expect monitoring now?</h2>
+<p>Each major framework already asks for ongoing monitoring in its own
+words:</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 36%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Framework</th>
+<th style="text-align: left;">What it asks for</th>
+<th style="text-align: left;">Why point-in-time checks fall short</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ISO/IEC 27001:2022</td>
+<td style="text-align: left;">Clause 9.1 requires the organisation to
+decide what to monitor and measure, how often, and who analyses the
+results</td>
+<td style="text-align: left;">A yearly sample cannot show the “how
+often” the clause asks you to define</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SOC 2 Type II (AICPA Trust Services
+Criteria)</td>
+<td style="text-align: left;">Controls must operate effectively across
+the whole review period, often 6 to 12 months</td>
+<td style="text-align: left;">One failed month can become an exception
+in the report</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">India’s DPDP Act and DPDP Rules, 2025</td>
+<td style="text-align: left;">Reasonable security safeguards, logs kept
+for at least one year, and breach reports to the Data Protection Board
+with a detailed report within 72 hours</td>
+<td style="text-align: left;">You cannot report a breach within 72 hours
+if you find failed controls months later</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CERT-In Directions (28 April 2022)</td>
+<td style="text-align: left;">Report specified cyber incidents within 6
+hours and keep ICT system logs for 180 days within India</td>
+<td style="text-align: left;">Six hours leaves no room for manual
+detection</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RBI directions for regulated entities</td>
+<td style="text-align: left;">Ongoing IT governance, risk management and
+assurance reviews</td>
+<td style="text-align: left;">Supervisors expect evidence across the
+year</td>
+</tr>
+</tbody>
+</table>
+<p>Sources: <a href="https://www.iso.org/standard/27001">ISO/IEC
+27001:2022</a>, <a
+href="https://www.meity.gov.in/static/uploads/2025/11/53450e6e5dc0bfa85ebd78686cadad39.pdf">DPDP
+Rules, 2025</a>, <a
+href="https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf">CERT-In
+Directions</a>.</p>
+<p>India’s Digital Personal Data Protection Act comes into full force on
+13 May 2027. That date is fixed, and every organisation that processes
+personal data of people in India must be compliant by then.</p>
+<h2 id="which-controls-should-you-monitor-first">Which controls should
+you monitor first?</h2>
+<p>Start where three things meet: high risk, frequent change and a
+system that can be queried. This starter set of 20 controls covers most
+of what auditors sample under all five frameworks.</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 22%" />
+<col style="width: 27%" />
+<col style="width: 17%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">#</th>
+<th style="text-align: left;">Control</th>
+<th style="text-align: left;">Test rule (pass when…)</th>
+<th style="text-align: left;">Frequency</th>
+<th style="text-align: left;">Usual owner</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">MFA on all admin and remote access</td>
+<td style="text-align: left;">100% of privileged accounts have MFA
+enforced</td>
+<td style="text-align: left;">Daily</td>
+<td style="text-align: left;">IAM lead</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Leaver access removed</td>
+<td style="text-align: left;">Accounts disabled within 24 hours of HR
+exit date</td>
+<td style="text-align: left;">Daily</td>
+<td style="text-align: left;">IT operations</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Privileged access review</td>
+<td style="text-align: left;">Every privileged role reviewed in the last
+90 days</td>
+<td style="text-align: left;">Weekly check, quarterly review</td>
+<td style="text-align: left;">System owners</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Shared or generic logins</td>
+<td style="text-align: left;">Zero active shared accounts outside an
+approved list</td>
+<td style="text-align: left;">Weekly</td>
+<td style="text-align: left;">IAM lead</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">Critical patches</td>
+<td style="text-align: left;">Critical OS and app patches applied within
+the policy window (for example 14 days)</td>
+<td style="text-align: left;">Daily</td>
+<td style="text-align: left;">Infrastructure</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">Endpoint protection</td>
+<td style="text-align: left;">Agent active and updated on 100% of
+managed devices</td>
+<td style="text-align: left;">Daily</td>
+<td style="text-align: left;">IT operations</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">Disk encryption</td>
+<td style="text-align: left;">Encryption on for every laptop and server
+holding personal data</td>
+<td style="text-align: left;">Daily</td>
+<td style="text-align: left;">IT operations</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">Public storage</td>
+<td style="text-align: left;">No storage bucket or file share open to
+the internet without approval</td>
+<td style="text-align: left;">Hourly</td>
+<td style="text-align: left;">Cloud team</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">Backups</td>
+<td style="text-align: left;">Last backup succeeded and a restore test
+passed in the last 90 days</td>
+<td style="text-align: left;">Daily / quarterly</td>
+<td style="text-align: left;">Infrastructure</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">Log collection</td>
+<td style="text-align: left;">Every in-scope system sent logs in the
+last 24 hours</td>
+<td style="text-align: left;">Hourly</td>
+<td style="text-align: left;">Security operations</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">Log retention</td>
+<td style="text-align: left;">Logs held for the longest rule that
+applies (180 days CERT-In, one year DPDP)</td>
+<td style="text-align: left;">Weekly</td>
+<td style="text-align: left;">Security operations</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">Vulnerability scans</td>
+<td style="text-align: left;">No critical finding older than the policy
+window</td>
+<td style="text-align: left;">Weekly</td>
+<td style="text-align: left;">Security</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">Change approval</td>
+<td style="text-align: left;">Every production change has an approved
+ticket</td>
+<td style="text-align: left;">Daily</td>
+<td style="text-align: left;">Engineering lead</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">Vendor contracts</td>
+<td style="text-align: left;">Every vendor that processes personal data
+has signed data clauses</td>
+<td style="text-align: left;">Monthly</td>
+<td style="text-align: left;">Procurement</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">Vendor assurance</td>
+<td style="text-align: left;">Current SOC 2 or ISO certificate on file
+for critical vendors</td>
+<td style="text-align: left;">Monthly</td>
+<td style="text-align: left;">Vendor risk</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">Security training</td>
+<td style="text-align: left;">95%+ of staff completed training this
+year</td>
+<td style="text-align: left;">Monthly</td>
+<td style="text-align: left;">HR / security</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">Consent records</td>
+<td style="text-align: left;">Every consent has a stored notice version,
+time and purpose</td>
+<td style="text-align: left;">Daily</td>
+<td style="text-align: left;">Product owner</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">Data subject requests</td>
+<td style="text-align: left;">Every request closed within the set
+deadline</td>
+<td style="text-align: left;">Daily</td>
+<td style="text-align: left;">Privacy lead</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">Retention and erasure</td>
+<td style="text-align: left;">No personal data held past its retention
+date</td>
+<td style="text-align: left;">Monthly</td>
+<td style="text-align: left;">Data owners</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">Incident readiness</td>
+<td style="text-align: left;">Breach runbook tested and contact list
+current in the last 6 months</td>
+<td style="text-align: left;">Monthly</td>
+<td style="text-align: left;">CISO</td>
+</tr>
+</tbody>
+</table>
+<p>Controls 17 to 19 are where most global toolkits stop short for
+India. The DPDP Act ties consent, rights and erasure to evidence, so
+they belong in the monitored set from day one.</p>
+<h2 id="how-often-should-each-control-be-tested">How often should each
+control be tested?</h2>
+<p>Set frequency by how fast a failure causes harm and how fast the
+underlying setting can change:</p>
+<ul>
+<li><p><strong>Hourly or real time:</strong> settings that can expose
+data in minutes, such as public storage, logging gaps and alerts from
+security tools.</p></li>
+<li><p><strong>Daily:</strong> identity, patching, endpoints and
+anything a regulator expects you to report within hours.</p></li>
+<li><p><strong>Weekly or monthly:</strong> reviews, vendor documents,
+training and retention.</p></li>
+<li><p><strong>Quarterly:</strong> access recertification, restore tests
+and policy reviews, with a weekly check that the quarterly task is not
+overdue.</p></li>
+</ul>
+<p>A useful rule: test a control at least four times inside the window
+you would have to report a failure in. For a 6-hour CERT-In clock, that
+means hourly checks on the controls that feed incident detection.</p>
+<h2 id="who-should-own-each-control">Who should own each control?</h2>
+<p>Every control needs one named owner who fixes failures, plus a second
+person who can confirm the fix. Shared ownership (“IT and security”) is
+the most common reason failures sit open. In our DPDP Act sessions with
+five leading hospitals in Eastern India, shared logins, contracts
+without data clauses and data that was never deleted came up again and
+again. Each of those had no single owner.</p>
+<h2 id="what-counts-as-evidence">What counts as evidence?</h2>
+<p>Auditors accept automated evidence when it shows four things:</p>
+<ol type="1">
+<li><p><strong>What was tested:</strong> the rule and the systems in
+scope.</p></li>
+<li><p><strong>When:</strong> a timestamp written by the system
+itself.</p></li>
+<li><p><strong>The result:</strong> pass or fail, with the raw data or a
+link to it.</p></li>
+<li><p><strong>What happened next:</strong> for a failure, the ticket,
+the fix and who confirmed it.</p></li>
+</ol>
+<p>Store evidence where it cannot be quietly edited, and map each item
+to every framework clause it supports. One MFA test result can serve ISO
+27001 Annex A 5.17 and 8.5, SOC 2 CC6.1, the DPDP security safeguards
+rule and RBI access control expectations at once. That reuse is where
+the time saving comes from.</p>
+<h2 id="a-90-day-plan-to-set-up-continuous-controls-monitoring">A 90-day
+plan to set up continuous controls monitoring</h2>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 39%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Days</th>
+<th style="text-align: left;">Work</th>
+<th style="text-align: left;">Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1 to 15</td>
+<td style="text-align: left;">List frameworks in scope, pick the 20
+starter controls, name owners</td>
+<td style="text-align: left;">Control register with owners and test
+rules</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">16 to 30</td>
+<td style="text-align: left;">Connect identity, cloud, endpoint and
+ticketing systems; write test rules</td>
+<td style="text-align: left;">First automated results for 10+
+controls</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">31 to 60</td>
+<td style="text-align: left;">Add the remaining controls, set alert
+routes and fix deadlines, map each control to framework clauses</td>
+<td style="text-align: left;">Daily dashboard and a failure queue per
+owner</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">61 to 90</td>
+<td style="text-align: left;">Run a mock audit from the stored evidence
+only; tune noisy tests</td>
+<td style="text-align: left;">Evidence pack an auditor can sample, plus
+a list of controls to add next</td>
+</tr>
+</tbody>
+</table>
+<p><strong>First-hand result:</strong> when we replaced quarterly
+spreadsheet audits with a live audit management system for a hospitality
+chain, audit time fell by 50 percent, overdue corrective actions fell by
+90 percent, and reporting moved from quarterly to real time (<a
+href="https://bluecoppertech.com/case-studies/audit-management-system?utm_source=github-pages&amp;utm_medium=referral&amp;utm_campaign=batch6-ghpages-ccm">case
+study</a>).</p>
+<h2 id="what-are-the-limits-of-continuous-controls-monitoring">What are
+the limits of continuous controls monitoring?</h2>
+<p>CCM is strong, and it still has blind spots:</p>
+<ul>
+<li><p><strong>Not every control can be automated.</strong> Board
+oversight, risk acceptance and policy quality need people. Plan for
+roughly a third of controls to stay manual, with reminders and
+attestations.</p></li>
+<li><p><strong>Bad test rules create false comfort.</strong> A test that
+checks “MFA policy exists” passes even when half the users are excluded.
+Review each rule with the control owner.</p></li>
+<li><p><strong>Alert fatigue is real.</strong> Start with fix deadlines
+that match risk, and suppress repeats until the owner responds.</p></li>
+<li><p><strong>Tools need access.</strong> Read-only API access to
+production systems must be approved and itself monitored.</p></li>
+<li><p><strong>It does not replace the audit.</strong> CCM shortens
+audit preparation. The external auditor still decides.</p></li>
+</ul>
+<h2 id="can-one-platform-cover-several-frameworks">Can one platform
+cover several frameworks?</h2>
+<p>Yes, if it maps each control once and reuses the evidence across
+frameworks. That is how <a
+href="https://bluecoppertech.com/products/vcontrol?utm_source=github-pages&amp;utm_medium=referral&amp;utm_campaign=batch6-ghpages-ccm">VControl</a>,
+Blue Copper Technologies’ continuous compliance product, is built. It
+tracks SOC 2, the <a
+href="https://bluecoppertech.com/products/vcontrol/compliance-frameworks/dpdp-act-compliance?utm_source=github-pages&amp;utm_medium=referral&amp;utm_campaign=batch6-ghpages-ccm">DPDP
+Act</a>, RBI and CERT-In requirements from one control set, and is
+designed to cut audit preparation time by up to 50%.</p>
+<p>Whatever tool you use, ask three questions before buying: Does it
+test the control or only store a document? Can it map one result to
+several frameworks? Can an auditor see the raw evidence without a login
+to every source system?</p>
+<h2 id="frequently-asked-questions">Frequently asked questions</h2>
+<p><strong>What is an example of continuous controls
+monitoring?</strong> A daily automated check that every privileged
+account has MFA enforced. When an account fails, the tool opens a ticket
+for the IAM lead, records the fix and stores both as audit evidence.</p>
+<p><strong>What is the difference between CCM and continuous
+auditing?</strong> CCM is run by management to keep controls working.
+Continuous auditing is run by internal audit to test those controls
+independently. Both can use the same data.</p>
+<p><strong>How long does it take to implement CCM?</strong> A focused
+rollout of 20 controls takes about 90 days. Adding frameworks later is
+faster, because most controls are already mapped.</p>
+<p><strong>Is CCM required by law?</strong> No law names CCM. ISO 27001
+clause 9.1, SOC 2 Type II, CERT-In’s 6-hour reporting rule and the DPDP
+Act’s 72-hour breach report all expect monitoring that a once-a-year
+check cannot provide.</p>
+<p><strong>Does CCM work for small companies?</strong> Yes. A smaller
+company can start with 10 controls and the tools it already uses, such
+as its identity provider and cloud console.</p>
+<h2 id="next-step">Next step</h2>
+<p>If you want a control-by-control view of where your organisation
+stands, take the free <a
+href="https://bluecoppertech.com/products/vcontrol/compliance-frameworks/dpdp-act-compliance/readiness-check?utm_source=github-pages&amp;utm_medium=referral&amp;utm_campaign=batch6-ghpages-ccm">DPDP
+readiness check</a>, or <a
+href="https://calendly.com/bct-marketing-bluecoppertech/30min?utm_source=github-pages&amp;utm_medium=referral&amp;utm_campaign=batch6-ghpages-ccm">book
+a 30-minute call</a> to plan your first 20 controls. You can also reach
+the team through the <a
+href="https://bluecoppertech.com/contact?utm_source=github-pages&amp;utm_medium=referral&amp;utm_campaign=batch6-ghpages-ccm">contact
+page</a>.</p>
+<p><strong>About the author.</strong> Gayatri Chakrabarty writes about
+continuous compliance, data protection and security operations at Blue
+Copper Technologies. See her profile on the <a
+href="https://bluecoppertech.com/company/team?utm_source=github-pages&amp;utm_medium=referral&amp;utm_campaign=batch6-ghpages-ccm">Blue
+Copper Technologies team page</a> or <a
+href="https://www.linkedin.com/in/gayatri-chakrabarty/">connect on
+LinkedIn</a>.</p>
+<p><strong>About Blue Copper Technologies.</strong> Founded in 2012 and
+headquartered in Kolkata, India, with an office in Gurugram, Blue Copper
+Technologies has delivered more than 300 solutions to over 150 customers
+in India, the USA, the UK, Europe and the Middle East. Its continuous
+compliance product, VControl, helps organisations stay audit-ready
+across global and Indian frameworks. The company is certified to ISO/IEC
+27001:2022 and ISO 9001:2015.</p>
+<p><em>This guide is general information, not legal advice. Check the
+current text of each framework and regulation for your
+situation.</em></p>
+</main>
+</body>
+</html>
